@@ -89,7 +89,7 @@ const bar = new progress.SingleBar({
         } catch(e) { ws.cell(curr_row, 7).string("N/A"); }
 
         // get available
-        let available = /<div id="availability" class="a-section a-spacing-base">[\r\n\s]+<span.+>[\r\n\s]+([\w ]+)/;
+        let available = /<div id="availability" class="a-section a-spacing-base }">[\r\n\s]+<span.+>[\r\n\s]+([\w ]+)/;
         try {
             let avail_match = res.body.match(available);
             ws.cell(curr_row, 8).string(avail_match[1]); 
