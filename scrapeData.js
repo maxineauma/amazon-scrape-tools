@@ -95,17 +95,17 @@ const bar = new progress.SingleBar({
             ws.cell(curr_row, 8).string(avail_match[1]); 
         } catch(e) { ws.cell(curr_row, 8).string("N/A"); }
 
-	// get merch by amazon
-	let mba = /Lightweight, Classic fit, Double-needle sleeve and bottom hem/;
-	try {
-	    let mba_match = res.body.match(mba);
-	    ws.cell(curr_row, 9).string("Yes");
-	} catch(e) { ws.cell(curr_row, 9).string("No"); }
+        // get merch by amazon
+        let mba = /Lightweight, Classic fit, Double-needle sleeve and bottom hem/;
+        try {
+            let mba_match = res.body.match(mba);
+            ws.cell(curr_row, 9).string("Yes");
+        } catch(e) { ws.cell(curr_row, 9).string("No"); }
 
-        wb.write('Amazon Report.xlsx'); // add line to spreadsheet each time data is retrieved
-        bar.increment();
-        await sleep(2000);
-    }
+            wb.write('Amazon Report.xlsx'); // add line to spreadsheet each time data is retrieved
+            bar.increment();
+            await sleep(2000);
+        }
 
     // End of program
     console.log("\n");
