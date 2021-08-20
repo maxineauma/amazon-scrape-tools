@@ -102,9 +102,9 @@ const bar = new progress.SingleBar({
             ws.cell(curr_row, 9).string("Yes");
         } catch(e) { ws.cell(curr_row, 9).string("No"); }
 
-            wb.write('Amazon Report.xlsx'); // add line to spreadsheet each time data is retrieved
-            bar.increment();
-            await sleep(2000);
+        wb.write('Amazon Report.xlsx'); // add line to spreadsheet each time data is retrieved
+        bar.increment();
+        await sleep(2000);
         }
 
     // End of program
