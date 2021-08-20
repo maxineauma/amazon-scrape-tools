@@ -1,3 +1,7 @@
+# Files created by script
+ASIN_data.txt
+*.xlsx
+
 # Logs
 logs
 *.log
