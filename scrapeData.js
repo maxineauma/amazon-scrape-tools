@@ -29,11 +29,11 @@ const bar = new progress.SingleBar({
 
     // Set Spreadsheet Headers:
     let headerStyle = wb.createStyle({ font: { bold: true }});
-    let headers = ["ASIN","Title","Rating","Reviews","Price","Rank","Fulfilled By","Available?"];
+    let headers = ["ASIN","Title","Rating","Reviews","Price","Rank","Fulfilled By","Available?","MBA?"];
     for(h in headers) ws.cell(1, parseInt(h)+1).string(headers[h]).style(headerStyle);
 
     // Set Column Sizes:
-    let widths = [20,70,20,10,20,10,20,30];
+    let widths = [20,70,20,10,20,10,20,30,10];
     for(w in widths) ws.column(parseInt(w)+1).setWidth(widths[w]);
 
     // Scrape each Amazon page:
@@ -94,6 +94,13 @@ const bar = new progress.SingleBar({
             let avail_match = res.body.match(available);
             ws.cell(curr_row, 8).string(avail_match[1]); 
         } catch(e) { ws.cell(curr_row, 8).string("N/A"); }
+
+	// get merch by amazon
+	let mba = /Lightweight, Classic fit, Double-needle sleeve and bottom hem/;
+	try {
+	    let mba_match = res.body.match(mba);
+	    ws.cell(curr_row, 9).string("Yes");
+	} catch(e) { ws.cell(curr_row, 9).string("No"); }
 
         wb.write('Amazon Report.xlsx'); // add line to spreadsheet each time data is retrieved
         bar.increment();
