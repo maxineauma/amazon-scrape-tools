@@ -20,12 +20,12 @@ function sleep(ms) {
     for(x = 1; x<max_pages + 1; x++) {
         const res = await got.get(url + "&page=" + x, {
             headers: { 'User-Agent': randomUseragent.getRandom() },
-            retry: { limit: 5 }
+            retry: { limit: 10 }
         });
         let re = /<a class="a-link-normal a-text-normal" href="\/[\w\-]+\/dp\/([a-zA-Z0-9]+)/gm;
         let match = res.body.matchAll(re);
         for(const m of match) await fs.appendFile('ASIN_data.txt', m[1] + '\n');
-        await sleep(2000);
+        await sleep(2000 + Math.floor(Math.random()*3000)); // wait anywhere between 2-5s
     }
 
 })();

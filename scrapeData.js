@@ -41,7 +41,7 @@ const bar = new progress.SingleBar({
     for(a in ASINs) {
         const res = await got.get("https://amazon.com/dp/"+ASINs[a]+"?th=1&psc=1", {
             headers: { 'User-Agent': randomUseragent.getRandom() },
-            retry: { limit: 5 }
+            retry: { limit: 10 }
         });
 
         let curr_row = parseInt(a) + 2;
@@ -76,7 +76,7 @@ const bar = new progress.SingleBar({
         } catch(e) { ws.cell(curr_row, 5).string("N/A"); }
 
         // get rank
-        let rank = /:<\/b> #([0-9,]+)/;
+        let rank = /#([0-9,]+) in/;
         try {
             let rank_match = res.body.match(rank);
             ws.cell(curr_row, 6).string(rank_match[1]);
@@ -96,17 +96,17 @@ const bar = new progress.SingleBar({
             ws.cell(curr_row, 8).string(avail_match[1]); 
         } catch(e) { ws.cell(curr_row, 8).string("N/A"); }
 
-        /*// get merch by amazon
-        let mba = /Lightweight, Classic fit, Double-needle sleeve and bottom hem/;
+        // get merch by amazon
+        let mba = /(Lightweight, Classic fit, Double-needle sleeve and bottom hem)/;
         try {
             let mba_match = res.body.match(mba);
-            ws.cell(curr_row, 9).string(mba_match);
-            ws.cell(curr_row, 9).string("Yes");
-        } catch(e) { ws.cell(curr_row, 9).string("No"); }*/
+            if(mba_match[1] === "Lightweight, Classic fit, Double-needle sleeve and bottom hem")
+                ws.cell(curr_row, 9).string("Yes");
+        } catch(e) { ws.cell(curr_row, 9).string("No"); }
 
         wb.write('Amazon Report.xlsx'); // add line to spreadsheet each time data is retrieved
         bar.increment();
-        await sleep(2000);
+        await sleep(2000 + Math.floor(Math.random()*3000)); // wait anywhere between 2-5s
         }
 
     // End of program
