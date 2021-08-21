@@ -4,6 +4,7 @@ const _ = require('lodash');
 const excel = require('excel4node');
 const progress = require('cli-progress');
 const _colors = require('colors');
+const randomUseragent = require('random-useragent');
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -39,7 +40,7 @@ const bar = new progress.SingleBar({
     // Scrape each Amazon page:
     for(a in ASINs) {
         const res = await got.get("https://amazon.com/dp/"+ASINs[a]+"?th=1&psc=1", {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'},
+            headers: { 'User-Agent': randomUseragent.getRandom() },
             retry: { limit: 5 }
         });
 
@@ -95,12 +96,13 @@ const bar = new progress.SingleBar({
             ws.cell(curr_row, 8).string(avail_match[1]); 
         } catch(e) { ws.cell(curr_row, 8).string("N/A"); }
 
-        // get merch by amazon
+        /*// get merch by amazon
         let mba = /Lightweight, Classic fit, Double-needle sleeve and bottom hem/;
         try {
             let mba_match = res.body.match(mba);
+            ws.cell(curr_row, 9).string(mba_match);
             ws.cell(curr_row, 9).string("Yes");
-        } catch(e) { ws.cell(curr_row, 9).string("No"); }
+        } catch(e) { ws.cell(curr_row, 9).string("No"); }*/
 
         wb.write('Amazon Report.xlsx'); // add line to spreadsheet each time data is retrieved
         bar.increment();

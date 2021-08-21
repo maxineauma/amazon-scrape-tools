@@ -1,6 +1,7 @@
 const got = require('got');
 const fs = require('fs').promises;
 const { ArgumentParser } = require('argparse');
+const randomUseragent = require('random-useragent');
 
 const parser = new ArgumentParser({ description: "Amazon scraping tool." });
 parser.add_argument('-u', '--url', { help: 'Amazon search results page URL, in quotes. Required.', required: true });
@@ -18,7 +19,7 @@ function sleep(ms) {
     await fs.writeFile('ASIN_data.txt', '');
     for(x = 1; x<max_pages + 1; x++) {
         const res = await got.get(url + "&page=" + x, {
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'},
+            headers: { 'User-Agent': randomUseragent.getRandom() },
             retry: { limit: 5 }
         });
         let re = /<a class="a-link-normal a-text-normal" href="\/[\w\-]+\/dp\/([a-zA-Z0-9]+)/gm;
